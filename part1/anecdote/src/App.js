@@ -19,18 +19,33 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-  // console.log(selected)
-  // console.log(Math.floor(Math.random() * anecdotes.lenght))
+  var n=anecdotes.length
+  const [points,setPoints]= useState(new Array(n).fill(0))
+  
+  const Addpoints = () => {
+    const pointscopy = [...points]
+    pointscopy[selected]+=1
+    setPoints(pointscopy)
+  }
+  
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
+      <div>has {points[selected]} votes</div>
       <div>
+      <Button handleClick={Addpoints} text="vote" />
       <Button
         handleClick={() =>
           setSelected(Math.floor(Math.random() * anecdotes.length))
         }
         text="next anecdote"
       />
+      <h1>Anecdote with most votes</h1>
+      <div>
+        {anecdotes[points.indexOf(Math.max(...points))]}
+      </div>
+      <div>has {Math.max(...points)} votes</div>
       </div>
     </div>
   )
