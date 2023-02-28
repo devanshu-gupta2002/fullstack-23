@@ -45,12 +45,13 @@ const App = () => {
   }
 
 const showFilter = newSearch.length===0 ?
+// eslint-disable-next-line
 persons : persons.filter((person) => {
   if(person.name.toLowerCase().includes(newSearch.toLowerCase()))
   {return (person)}
+  
 })
 
-  // console.log(newName)
   return (
     <div>
       <h2>Phonebook</h2>
