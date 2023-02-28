@@ -8,10 +8,14 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   const addName = (event) =>{
-    event.preventDefault()
-    
-    setPersons(persons.concat({name: newName}))
+    if (persons.find(person=>person.name===newName))
+    {event.preventDefault()
+      alert(`${newName} is already present`)
     setNewName('')
+    }else{
+    event.preventDefault()
+    setPersons(persons.concat({name: newName}))
+    setNewName('')}
   }
 
   const nameChange = (event) =>{
@@ -26,6 +30,8 @@ const App = () => {
       </div>
     )
   }
+
+
 
   // console.log(newName)
   return (
