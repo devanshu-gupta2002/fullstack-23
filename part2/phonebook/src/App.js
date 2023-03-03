@@ -1,14 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Person from './components/person.js'
 import Form from './components/form.js'
 import Filter from './components/filter.js'
+import axios from 'axios'
 
 const App = (props) => {
-  const [persons, setPersons] = useState(props.persons) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setSearch] = useState('')
   
+  const hook = () => {
+    console.log('hook effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }
+  // console.log('render', notes.length, 'notes')
+  useEffect(hook, [])
+
   const addName = (event) =>{
     if (persons.find(person=>person.name===newName))
     {
