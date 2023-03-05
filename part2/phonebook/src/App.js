@@ -31,14 +31,25 @@ const App = (props) => {
     const noteObject = {
       name: newName, 
       number: newNumber, 
-      id:persons.length+1,
+      id: newName,
     }
     noteService
         .create(noteObject)
-        .then(returnedPerson => {setPersons(persons.concat(returnedPerson))
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')})
   }}
+
+const deleteEntry = (id, name) => {
+  if (window.confirm(`Delete ${name}?`))
+  (noteService
+  .deleteEntry(id)
+  .then(response => {
+    const newPersons = persons.filter(person => person.id !== id)
+    setPersons(newPersons)
+  }))
+}
 
   const searchName = (event) =>{
     setSearch(event.target.value)
@@ -63,7 +74,7 @@ persons : persons.filter((person) => {
     <div>
       <Filter newSearch={newSearch} searchName={searchName} />
       <Form addName={addName} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
-      <Person showFilter={showFilter} />
+      <Person showFilter={showFilter} deleteEntry={deleteEntry}/>
       </div>
   )
 }

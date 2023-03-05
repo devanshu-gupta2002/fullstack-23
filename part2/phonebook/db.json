@@ -1,29 +1,24 @@
 {
-"persons": [
+  "persons": [
     {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": "Dan Abramov"
     },
     {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
+      "name": "Devanshu",
+      "number": "8004604365",
+      "id": "Devanshu"
     },
     {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
+      "name": "Arto Hellas",
+      "number": "04138-45897",
+      "id": "Arto Hellas"
     },
     {
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
-    },
-    {
-    "name": "Devanshu Gupta",
-    "number": "8004604365",
-    "id": 5
+      "name": "Kushagra",
+      "number": "9856445777",
+      "id": "Kushagra"
     }
-]
+  ]
 }
