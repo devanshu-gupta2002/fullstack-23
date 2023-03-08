@@ -3,12 +3,16 @@ import Person from './components/person.js'
 import Form from './components/form.js'
 import Filter from './components/filter.js'
 import noteService from "./services/person"
+import Notification from './components/notification.js'
+import "./index.css"
+
 
 const App = (props) => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setSearch] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
   
   
   useEffect(() => {
@@ -36,9 +40,22 @@ const App = (props) => {
             const updatedPersons =persons.map((person) => 
             person.id !== returnedPerson ? person : returnedPerson)
             setPersons(updatedPersons)  
-            console.log("updated")                    
-            // window.location.reload()
-          })
+            // console.log("updated")
+            // setErrorMessage(
+            //   `Added ${newName}`
+            //   )   
+            //   setTimeout(() => {
+              //     setErrorMessage(null)}, 5000)
+            })
+            .catch(error => {
+              setErrorMessage(
+                `'${newName}' was already removed from server`
+              )
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)
+            })
+              // window.location.reload()
       }
       
     }
@@ -53,7 +70,14 @@ const App = (props) => {
         .create(noteObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setErrorMessage(
+            `Added ${newName}`
+          )  
+          
+          setTimeout(() => {
+            setErrorMessage(null)}, 5000)
           })
+          
         }
         setNewName('')
         setNewNumber('')
@@ -66,7 +90,19 @@ const deleteEntry = (id, name) => {
   .then(response => {
     const newPersons = persons.filter(person => person.id !== id)
     setPersons(newPersons)
-  }))
+    setErrorMessage(
+      `Deleted ${name}`
+    )   
+    setTimeout(() => {
+      setErrorMessage(null)}, 5000)
+  }).catch(error => {
+    setErrorMessage(
+      `${name} was already removed from server`
+    )
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)})
+  )
 }
 
   const searchName = (event) =>{
@@ -90,6 +126,7 @@ persons : persons.filter((person) => {
 
   return (
     <div>
+      <Notification message ={errorMessage} />
       <Filter newSearch={newSearch} searchName={searchName} />
       <Form addName={addName} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
       <Person showFilter={showFilter} deleteEntry={deleteEntry}/>
