@@ -22,9 +22,25 @@ const App = (props) => {
   const addName = (event) =>{
     if (persons.find(person=>person.name===newName))
     {
-      event.preventDefault()
-      alert(`${newName} is already present`)
-      setNewName('')
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with new one`))
+      {
+        // event.preventDefault()
+        const noteObject = {
+          name : newName,
+          id : newName,
+          number : newNumber
+        }
+        noteService
+          .update(noteObject.id, noteObject)
+          .then(returnedPerson => {
+            const updatedPersons =persons.map((person) => 
+            person.id !== returnedPerson ? person : returnedPerson)
+            setPersons(updatedPersons)  
+            console.log("updated")                    
+            // window.location.reload()
+          })
+      }
+      
     }
     else{
     event.preventDefault()
@@ -37,9 +53,11 @@ const App = (props) => {
         .create(noteObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewNumber('')})
-  }}
+          })
+        }
+        setNewName('')
+        setNewNumber('')
+      }
 
 const deleteEntry = (id, name) => {
   if (window.confirm(`Delete ${name}?`))

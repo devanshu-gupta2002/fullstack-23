@@ -16,5 +16,10 @@ const request = axios.delete(`http://localhost:3001/persons/${id}`)
 return request.then(response => response)
 }
 
-const exported = {getAll, create, deleteEntry}
+const update = (id, newObject) =>{
+    const request = axios.put(`http://localhost:3001/persons/${id}`, newObject)
+    return request.then(response => response.data)
+}
+
+const exported = {getAll, create, deleteEntry, update}
 export default exported
