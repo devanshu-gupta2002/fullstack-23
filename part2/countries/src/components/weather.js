@@ -11,7 +11,7 @@ const Weather = ({lat, lon, countryName}) => {
     .then(response => {
         setWeather(response.data)
     })
-    }, [])
+    })
     // console.log(weather)
 
     return (
