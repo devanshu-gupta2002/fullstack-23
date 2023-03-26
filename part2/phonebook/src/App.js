@@ -23,6 +23,7 @@ const App = (props) => {
       })
   }, [])
 
+  // console.log(persons)
   const addName = (event) =>{
     if (persons.find(person=>person.name===newName))
     {
