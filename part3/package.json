@@ -6,11 +6,14 @@
   "scripts": {
     "start": "node part3/index.js",
     "dev": "nodemon part3/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf build && cd /home/devanshu/fullstack/part2/phonebook && npm run build && cp -r build /home/devanshu/fullstack/part3",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Devanshu",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "morgan": "^1.10.0"
   },
