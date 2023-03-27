@@ -104,21 +104,21 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
   })
 
-  if(persons.find(per => per.name.toLowerCase()===person.name))
-  {
-    console.log("found")
-    return response.status(400).json(
-      {
-      error: "name must be unique"
-      }
-    )
-  }
-  else{ 
+  // if(persons.find(per => per.name.toLowerCase()===person.name))
+  // {
+  //   console.log("found")
+  //   return response.status(400).json(
+  //     {
+  //     error: "name must be unique"
+  //     }
+  //   )
+  // }
+  
     person.save().then(savedPerson => {
       response.json(savedPerson)
     })
     
-  }
+  
   
 })
 
