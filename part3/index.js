@@ -33,15 +33,13 @@ app.get('/api/persons', (request, response, next) => {
   .catch(error => next(error))
 })
 
-app.get('/info', (request, response) => {
-  const len=persons.length
-  const date_time=new Date()
-  response.send(
-    `<div>Phonebook has info for ${len} people</div>
-    <div>${date_time}</div>`)
-})
+// app.get('/info', (request, response) => {
+//   response.send(
+//     `<div>Phonebook has info for ${Person.length} people</div>
+//     <div>${new Date()}</div>`)
+// })
 
-app.get('/api/notes/:id', (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(person => {
       if(person)
