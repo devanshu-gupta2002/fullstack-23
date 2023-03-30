@@ -25,22 +25,25 @@ const App = (props) => {
 
   // console.log(persons)
   const addName = (event) =>{
-    if (persons.find(person=>person.name===newName))
+    const oldEntry = persons.find((person => person.name===newName))
+    if (oldEntry!==undefined)
     {
+      event.preventDefault()
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with new one`))
       {
-        // event.preventDefault()
         const noteObject = {
-          name : newName,
-          id : newName,
-          number : newNumber
+          ...oldEntry,
+          number : newNumber,
         }
+        console.log(noteObject)
         noteService
-          .update(noteObject.id, noteObject)
+          .update(noteObject)
           .then(returnedPerson => {
-            const updatedPersons =persons.map((person) => 
-            person.id !== returnedPerson ? person : returnedPerson)
-            setPersons(updatedPersons)  
+            setPersons(persons.filter(person => person.name !== oldEntry.name).concat(noteObject)) 
+            setNewName('')
+            setNewNumber('')
+            setErrorMessage(`Updated ${noteObject.name}`)
+            setTimeout(() => {setErrorMessage(null)}, 5000)
             // console.log("updated")
             // setErrorMessage(
             //   `Added ${newName}`
@@ -65,7 +68,7 @@ const App = (props) => {
     const noteObject = {
       name: newName, 
       number: newNumber, 
-      id: newName,
+    
     }
     noteService
         .create(noteObject)
