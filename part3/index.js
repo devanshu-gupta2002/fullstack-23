@@ -5,15 +5,6 @@ var morgan = require('morgan')
 const cors=require('cors')
 const Person = require('./module/person')
 
-const errorHandler = (error, request, response, next) => {
-  console.log(error.message)
-  if(error.name === 'CastError')
-  {
-    return response.status(400).send({error: 'malformatted id'})
-  }
-  next(error)
-}
-
 const unknownEndpoint = (request, response) => {
   response.status(404).send({error: 'unknown endpoint'})
 }
@@ -62,7 +53,7 @@ app.delete('/api/persons/:id', (request,response,next) => {
   .catch(error => next(error))  
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body=request.body
 
   if(body.name===undefined)
@@ -87,16 +78,14 @@ app.post('/api/persons', (request, response) => {
   })
   person.save().then(savedPerson => {
   response.json(savedPerson)
-  })  
+  })
+  .catch(error => next(error))  
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const body = request.body
-  const person = { 
-    name: body.name,
-    number: body.number,
-  }
-  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+  const {name, number} = request.body
+  
+  Person.findByIdAndUpdate(request.params.id, {name, number}, {new: true, runValidators: true, context: "query"})
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
@@ -104,6 +93,17 @@ app.put('/api/persons/:id', (request, response, next) => {
 })
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message)
+  if(error.name === 'CastError')
+  {
+    return response.status(400).send({error: 'malformatted id'})
+  } else if(error.name === 'ValidationError'){
+    return response.status(400).json({error: error.message})
+  }
+  next(error)
+}
 app.use(errorHandler)
 
 const PORT = process.env.PORT
