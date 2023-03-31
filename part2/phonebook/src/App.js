@@ -44,12 +44,6 @@ const App = (props) => {
             setNewNumber('')
             setErrorMessage(`Updated ${noteObject.name}`)
             setTimeout(() => {setErrorMessage(null)}, 5000)
-            // console.log("updated")
-            // setErrorMessage(
-            //   `Added ${newName}`
-            //   )   
-            //   setTimeout(() => {
-              //     setErrorMessage(null)}, 5000)
             })
             .catch(error => {
               setErrorMessage(
@@ -59,7 +53,6 @@ const App = (props) => {
                 setErrorMessage(null)
               }, 5000)
             })
-              // window.location.reload()
       }
       
     }
@@ -76,11 +69,15 @@ const App = (props) => {
           setPersons(persons.concat(returnedPerson))
           setErrorMessage(
             `Added ${newName}`
-          )  
-          
+          )          
           setTimeout(() => {
             setErrorMessage(null)}, 5000)
           })
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)}, 5000)
+        })
           
         }
         setNewName('')
