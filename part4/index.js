@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -7,13 +8,28 @@ const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: Number
+  likes: Number,
+})
+
+blogSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = 'mongodb://localhost/bloglist'
+const mongoUrl = process.env.MONGODB_URI
+console.log(`connecting to: ${mongoUrl}`)
 mongoose.connect(mongoUrl)
+  .then(() => {
+    console.log(`connected to MongoDB`)
+  })
+  .catch(() => {
+    console.log(`error connecting to MongoDB`)
+  })
 
 app.use(cors())
 app.use(express.json())
