@@ -1,0 +1,16 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node part4/index.js",
+    "dev": "nodemon part4/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Devanshu",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
