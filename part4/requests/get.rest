@@ -1,7 +1,7 @@
 GET http://localhost:3003/api/blogs
 
 ###
-GET http://localhost:3003/api/blogs/id
+GET http://localhost:3003/api/blogs/644ba0d0a62676314b1315ad
 
 ###
 GET http://localhost:3003/api/users
