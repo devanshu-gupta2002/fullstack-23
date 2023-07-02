@@ -52,7 +52,7 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    // console.log(blogObject)
+    
     blogService
       .create(blogObject)
       .then(returnedBlog => {
