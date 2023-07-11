@@ -20,7 +20,7 @@ const App = () => {
   
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs.sort((p1, p2) => ((p1.likes<p2.likes) ? 1 : (p1.likes>p2.likes) ? -1 : 0)) )
     )  
   }, [])
 
@@ -61,6 +61,15 @@ const App = () => {
   const updateBlog = async(updatedBlog) => {
     blogService.update(updatedBlog)
   }
+
+  const removeCurrBlog = async(blog) => {
+    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+    const updatedBlogs = blogs.filter(res => res.id!==blog.id)
+    await blogService.remove(blog, blogs)
+    setBlogs(updatedBlogs)
+    }
+
+  }
     
   const loginForm = () => (
     <div>
@@ -80,7 +89,6 @@ const App = () => {
     )
 
 
-
   const blogForm = () => (
     <div>
     <h1><u>Blogs</u></h1>
@@ -96,7 +104,13 @@ const App = () => {
         <BlogForm createBlog={addBlog} />
       </Togglable>
     {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} updateBlog={updateBlog} userName={user.name}/>
+      <Blog 
+        key={blog.id} 
+        blog={blog} 
+        updateBlog={updateBlog} 
+        userName={user.username} 
+        removeCurrBlog={removeCurrBlog}
+        />
     )}
   </div>
 

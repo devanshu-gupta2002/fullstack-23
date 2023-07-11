@@ -1,10 +1,13 @@
 import { useState } from "react"
 
-const Blog = ({blog, updateBlog, userName}) => {
+const Blog = ({blog, updateBlog, userName, removeCurrBlog}) => {
   const [blogVisible, setBlogVisible] =useState(false)
+  // const {removeVisibility} = useState(userId===blog.user.id ? {display: ''} : {display: 'none'})
+  // const {visible} = useState(visibility)
   const [newLikes, setNewLikes] = useState(blog.likes)
   const hide = {display: blogVisible ? 'none' : ''}
   const show = {display: blogVisible ? '' : 'none'}
+  
   const addLike = () => {
     blog = {
       ...blog, 
@@ -14,6 +17,12 @@ const Blog = ({blog, updateBlog, userName}) => {
     updateBlog(blog)
     setNewLikes(blog.likes)
   }
+
+  const removeBlog = () => {
+    removeCurrBlog(blog)
+  }
+
+  // const removeVisibility = userId===blog.user.id ? {display: ''} : {display: 'none'}
 
   return (
   <div className="blog-style">
@@ -28,11 +37,16 @@ const Blog = ({blog, updateBlog, userName}) => {
       </div>
       <div className="likes">
         {newLikes}
-        <button onClick={addLike}>Like</button>
+        <button onClick={addLike} className="button button-like">Like</button>
       </div>
       <div className="user">
-        {userName}
+        {blog.user.name}
       </div>
+      {/* <div style={{display: visible ? '' : 'none'}}> */}
+      {blog.user.username === userName && (
+            <button className="button-remove" onClick={removeBlog}>
+              delete
+            </button>)}
       </div>
     </div> 
   )}
