@@ -50,18 +50,18 @@ const App = () => {
     }
   }
 
-  const addBlog = (blogObject) => {
+  const addBlog =  async (blogObject) => {
     blogFormRef.current.toggleVisibility()
-    
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setErrorMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+    const blog = await blogService.create(blogObject)
+        setBlogs(blogs.concat(blog))
+        setErrorMessage(`A new blog ${blog.title} by ${blog.author} added`)
         setTimeout(() => {setErrorMessage(null)}, 5000)
-      })
-  }
+    }
 
+  const updateBlog = async(updatedBlog) => {
+    blogService.update(updatedBlog)
+  }
+    
   const loginForm = () => (
     <div>
       <form onSubmit={handleLogin}>
@@ -95,9 +95,8 @@ const App = () => {
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-
     {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
+      <Blog key={blog.id} blog={blog} updateBlog={updateBlog} userName={user.name}/>
     )}
   </div>
 
