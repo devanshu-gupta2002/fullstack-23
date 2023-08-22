@@ -4,6 +4,7 @@ import {
   useNavigate,
   Routes, Route, Link,
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -23,7 +24,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map(anecdote => <li key={anecdote.id} >
-        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content.value}</Link>
       </li>)}
     </ul>
   </div>
@@ -32,15 +33,15 @@ const AnecdoteList = ({ anecdotes }) => (
 const Anecdote = ({anecdote}) => {
   return(
     <div>
-    <h2>{anecdote.content} by {anecdote.author}</h2>
+    <h2>{anecdote.content.value} by {anecdote.author.value}</h2>
     <p>has {anecdote.votes} votes</p>
-    <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
+    <p>for more info see <a href={anecdote.info.value}>{anecdote.info.value}</a></p>
   </div>
   )
 }
 
 const Notification = (notification) => {
-  console.log(notification)
+  // console.log(notification)
   if(notification==='') {
     return (<></>)
   }
@@ -72,11 +73,14 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
-  const navigate = useNavigate()
+  // const [content, setContent] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [info, setInfo] = useState('')
 
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -89,6 +93,12 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.onChange({target: {value: ''}})
+    author.onChange({target: {value: ''}})
+    info.onChange({target: {value: ''}})
+  }
 
   return (
     <div>
@@ -96,17 +106,21 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          {/* <input name='content' value={content} onChange={(e) => setContent(e.target.value)} /> */}
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          {/* <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} /> */}
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          {/* <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} /> */}
+          <input {...info} />
         </div>
-        <button onClick={() => props.setNotification(`A new anecdote ${content} created!`)}>create</button>
+        <button onClick={() => props.setNotification(`A new anecdote ${content.value} created!`)}>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
@@ -114,24 +128,27 @@ const CreateNew = (props) => {
 }
 
 const App = () => {
+  const [notification, setNotification] = useState('')
   const [anecdotes, setAnecdotes] = useState([
     {
-      content: 'If it hurts, do it more often',
-      author: 'Jez Humble',
-      info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
+      content: {
+        value: 'Premature optimization is the root of all evil'
+      },
+      author: {
+        value: 'Jez Humble'
+      },
+      info: {
+        value: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
+      }, 
       votes: 0,
       id: 1
     },
-    {
-      content: 'Premature optimization is the root of all evil',
-      author: 'Donald Knuth',
-      info: 'http://wiki.c2.com/?PrematureOptimization',
-      votes: 0,
-      id: 2
-    }
   ])
+  // const anecdotes = useField('text')
+  // anecdotes.value = {
+    
+  // }
 
-  const [notification, setNotification] = useState('')
   
   useEffect(() => {
     if (notification !== '') {
