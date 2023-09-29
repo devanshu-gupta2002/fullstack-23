@@ -1,7 +1,6 @@
 require('dotenv').config()
 const { Sequelize, Model, DataTypes } = require('sequelize')
 const express  = require('express')
-const { model } = require('mongoose')
 const app = express()
 
 app.use(express.json())
